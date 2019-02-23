@@ -53,9 +53,10 @@ exec_cmd() {
 }
 print_bold "Hello,  This script will install Homebridge Server in your Pi\n\n Press Enter to contine or CTRL + C to abort"
 
-while true; do
-    read -p "Enter your Rpi type (a/b/z/2/3) and press [ENTER] or C to cancel:" aAbBcCzZ23
-    case $aAbBcCzZ23 in
+while true 
+do
+    read -p "Enter your Rpi type (a/b/z/2/3) and press [ENTER] or C to cancel:" answer
+    case $answer in
         [23]* )    echo "Raspberry 2/3 ARMV7 Selected";
 		exec_cmd 'sudo apt-get update';
 		exec_cmd 'sudo apt-get install -y git make';
