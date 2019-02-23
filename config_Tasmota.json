@@ -1,0 +1,49 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "A4:C3:3A:E3:C2:3A",
+        "port": 51826,
+        "pin": "031-45-154"
+    },
+    "description": "Homebridge",
+    "platforms": [
+        {
+            "name": "Config",
+            "port": 8080,
+            "auth": "none",
+            "theme": "blue",
+            "restart": "sudo -n systemctl restart homebridge",
+            "tempUnits": "c",
+            "sudo": true,
+            "log": {
+                "method": "systemd",
+                "service": "homebridge"
+            },
+            "platform": "config"
+        }
+    ],
+    "accessories": [
+        {
+            "accessory": "GPIODevice",
+            "name": "Sofa",
+            "type": "switch",
+            "inverted": "true",
+            "pin": 5
+        },
+        {
+            "description": "Tatmota MQTT",
+            "accessory": "mqtt-switch-tasmota",
+            "switchType": "lightbulb",
+            "name": "SonoffRF",
+            "url": "mqtt://127.0.0.1",
+            "topics": {
+                "statusGet": "stat/sonoff/POWER",
+                "statusSet": "cmnd/sonoff/power",
+                "stateGet": "tele/sonoff/STATE"
+            },
+            "manufacturer": "RabelBeat",
+            "model": "Sonoff Basic",
+            "serialNumberMAC": ""
+        }
+    ]
+}
