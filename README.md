@@ -15,7 +15,7 @@ Node.js V8.9.4, [Homebridge](https://github.com/nfarina/homebridge),
 
 [GPIO Device Plugin](https://github.com/dubocr/homebridge-gpio-device) - פלאגין שבו ניתן להשתמש בפינים של הרספברי בתור אביזרים שונים
 
-[systemd service](https://timleland.com/setup-homebridge-to-start-on-bootup) - יצירת תהליך להפעלת הומברידג' כאשר הרספברי נדלק או שהתהליך קורס מסיבה כל שהיא 
+[systemd service](https://timleland.com/setup-homebridge-to-start-on-bootup) - יצירת תהליך להפעלת הומברידג' כאשר הרספברי נדלק או שהתהליך קרס מסיבה כל שהיא 
 
 ```
 wget https://raw.githubusercontent.com/Rabelbeat/HB_Installation/master/install_HomebridgeAll.sh && sh install_HomebridgeAll.sh
