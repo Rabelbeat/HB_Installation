@@ -56,5 +56,5 @@ print_bold "Hello,  This script will install Homebridge Server in your Pi\n\n Pr
 exec_cmd 'sudo apt-get update';
 exec_cmd 'sudo apt-get install -y git make';
 exec_cmd 'git clone https://github.com/Rabelbeat/HB_Installation.git'
-exec_cmd 'sh HB_Installation/install_Homebridge.sh'
+exec_cmd 'sh HB_Installation/install_HomebridgeAll.sh'
 exit 1
