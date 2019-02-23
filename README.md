@@ -1,2 +1,2 @@
 # Homebridge installation
-# התקנת הום ברידג
+# Homebridge התקנת
