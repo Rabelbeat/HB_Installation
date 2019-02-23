@@ -26,7 +26,7 @@
         {
             "accessory": "GPIODevice",
             "name": "Sofa",
-            "type": "switch",
+            "type": "outlet",
             "inverted": "true",
             "pin": 5
         },
