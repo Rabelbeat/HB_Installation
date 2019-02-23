@@ -52,10 +52,9 @@ exec_cmd() {
     exec_cmd_nobail "$1" || bail
 }
 print_bold "Hello,  This script will install Homebridge Server in your Pi\n\n Press Enter to contine or CTRL + C to abort"
-
 while true 
 do
-    read -p "Enter your Rpi type (a/b/z/2/3) and press [ENTER] or C to cancel:" answer
+    read -p "Enter your Raspberry Pi Model (a/b/z/2/3) and press [ENTER] or C to cancel:" answer
     case $answer in
         [23]* )    echo "Raspberry 2/3 ARMV7 Selected";
 		exec_cmd 'sudo apt-get update';
@@ -64,10 +63,10 @@ do
 		exec_cmd 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -';
 		print_status "##### Downloading Homebridge Config files ######\n\n";
 		exec_cmd 'cd /tmp';
-		exec_cmd 'git clone https://gist.github.com/rabelbeat/1da2f05666a35b36d52c60c620397f07';
-		exec_cmd 'sudo cp 1da2f05666a35b36d52c60c620397f07/homebridge /etc/default/homebridge';
-		exec_cmd 'sudo cp 1da2f05666a35b36d52c60c620397f07/homebridge.service /etc/systemd/system/homebridge.service';
-		exec_cmd 'sudo cp 1da2f05666a35b36d52c60c620397f07/config.json /var/homebridge/config.json';
+		exec_cmd 'git clone https://github.com/Rabelbeat/HB_Installation.git';
+		exec_cmd 'sudo cp HB_Installation/service_environment /etc/default/homebridge';
+		exec_cmd 'sudo cp HB_Installation/Rpi_2-3_Service /etc/systemd/system/homebridge.service';
+		exec_cmd 'sudo cp HB_Installation/configMinmal.json /var/homebridge/config.json';
 		break;;
 		[aAbBzZ]* ) echo "Raspberry A/B/Zero ARMV6 Selected";
 		exec_cmd 'sudo apt-get update';
@@ -78,15 +77,18 @@ do
 		exec_cmd 'sudo cp -r node-v8.9.4-linux-armv6l/* /usr/local/';
 		print_status "##### Downloading Homebridge Config files & create systemd failover service ######\n\n";
 		exec_cmd 'cd /tmp';
-		exec_cmd 'git clone https://gist.github.com/rabelbeat/1da2f05666a35b36d52c60c620397f07';
-		exec_cmd 'sudo cp 1da2f05666a35b36d52c60c620397f07/homebridge /etc/default/homebridge';
-		exec_cmd 'sudo cp 1da2f05666a35b36d52c60c620397f07/homebridge.service /etc/systemd/system/homebridge.service';
-		exec_cmd 'sudo cp 1da2f05666a35b36d52c60c620397f07/config.json /var/homebridge/config.json';
+		exec_cmd 'git clone https://github.com/Rabelbeat/HB_Installation.git';
+		exec_cmd 'sudo cp HB_Installation/service_environment /etc/default/homebridge';
+		exec_cmd 'sudo cp HB_Installation/Rpi_2-3_Service /etc/systemd/system/homebridge.service';
+		exec_cmd 'sudo cp HB_Installation/configMinmal.json /var/homebridge/config.json';
 		break;;
         [cC]* ) exit;;
          * ) echo "Please Yor Board Type.";;
     esac
 done
+
+cd ~
+exec_cmd 'sudo rm -rf /tmp/HB_Installation/'
 
 print_status "##### Usermode & Permissions Setup ######\n\n"
 exec_cmd 'sudo useradd --system homebridge'
