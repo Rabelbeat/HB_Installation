@@ -94,7 +94,7 @@ print_status "##### Usermode & Permissions Setup ######\n\n"
 exec_cmd 'sudo useradd --system homebridge'
 exec_cmd 'sudo mkdir /var/homebridge'
 exec_cmd 'sudo chmod -R 0777 /var/homebridge'
-exec_cmd 'echo "homebridge    ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers'
+exec_cmd 'echo "$USER    ALL=(ALL) NOPASSWD: ALL" | sudo tee -a /etc/sudoers'
 exec_cmd 'sudo usermod -aG gpio homebridge'
 exec_cmd 'sudo usermod -aG video pi'
 exec_cmd 'sudo usermod -aG video homebridge'
