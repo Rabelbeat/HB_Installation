@@ -9,13 +9,14 @@ Please follow after instructions
 # התקנת הומברידג' לכל דגמי הרספברי פאי
 :סקריפט התקנה מלאה ע"י שורת קוד אחת. ההתקנה כוללת
 
-Node.js V8.9.4, [Homebridge](https://github.com/nfarina/homebridge), 
+* Node.js V8.9.4
+* [Homebridge](https://github.com/nfarina/homebridge)
 
-[Config-ui-x Plugin](https://github.com/oznu/homebridge-config-ui-x) - !פלאגין לניהול הומברידג' דרך הדפדפן, שימושי ביותר 
+* [Config-ui-x Plugin](https://github.com/oznu/homebridge-config-ui-x) - !פלאגין לניהול הומברידג' דרך הדפדפן, שימושי ביותר 
 
-[GPIO Device Plugin](https://github.com/dubocr/homebridge-gpio-device) - פלאגין שבו ניתן להשתמש בפינים של הרספברי בתור אביזרים שונים
+* [GPIO Device Plugin](https://github.com/dubocr/homebridge-gpio-device) - פלאגין שבו ניתן להשתמש בפינים של הרספברי בתור אביזרים שונים
 
-[systemd service](https://timleland.com/setup-homebridge-to-start-on-bootup) - יצירת תהליך להפעלת הומברידג' כאשר הרספברי נדלק או 
+* [systemd service](https://timleland.com/setup-homebridge-to-start-on-bootup) - יצירת תהליך להפעלת הומברידג' כאשר הרספברי נדלק או 
 שהתהליך קרס מסיבה כל שהיא 
 
 ולהעתיק לטרמינל את הפקודה הבאה [Putty](https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.70-installer.msi) להתחלת ההתקנה יש להתחבר לרספברי בעזרת 
