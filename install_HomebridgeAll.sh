@@ -32,7 +32,7 @@ print_bold() {
     echo "${blue}================================================================================${normal}"
     echo "${blue}================================================================================${normal}"
     echo
-    echo -e "  ${bold}${yellow}${title}${normal}"
+    echo -e "${bold}${green}${title}${normal}"
     echo
     echo "${blue}================================================================================${normal}"
     echo "${blue}================================================================================${normal}"
@@ -56,7 +56,7 @@ while true
 do
     read -p "Enter your Raspberry Pi Model (a/b/z/2/3) and press [ENTER] or C to cancel:" answer
     case $answer in
-        [23]* )    echo "Raspberry 2/3 ARMV7 Selected";
+        [23]* )    echo "${green}Raspberry 2/3 ARMV7 Selected${normal}";
 		exec_cmd 'sudo apt-get update';
 		exec_cmd 'sudo apt-get install -y git make';
 		print_status "##### Installing Node.Js  For Raspberry Pi 2/3 ######\n\n";
@@ -68,7 +68,7 @@ do
 		exec_cmd 'sudo cp HB_Installation/Rpi_2-3_Service /etc/systemd/system/homebridge.service';
 		exec_cmd 'sudo cp HB_Installation/configMinmal.json /var/homebridge/config.json';
 		break;;
-		[aAbBzZ]* ) echo "Raspberry A/B/Zero ARMV6 Selected";
+		[aAbBzZ]* ) echo "{green}Raspberry A/B/Zero ARMV6 Selected${normal}";
 		exec_cmd 'sudo apt-get update';
 		exec_cmd 'sudo apt-get install -y git make';
 		print_status "##### Installing Node.Js V8.9.4 For Raspberry Pi A/B/B+/Zero ######\n\n";
@@ -86,9 +86,22 @@ do
          * ) echo "Please Yor Board Type.";;
     esac
 done
+		
+while true 
+do
+    read -p "Do yo want to install mosquitto MQTT broker?" answer
+    case $answer in
+        [yY]* )  echo "{green}Installing mosquitto & mosquitto-clients{normal}";
+		exec_cmd 'sudo apt install -y mosquitto mosquitto-clients';
+		break;;
+		[nN]* ) echo "{red}Skipping mosquitto installation{normal}";
+		break;;
+         * ) echo "Please write y/n to continue";;
+    esac
+done		
+		
+		
 
-cd ~
-exec_cmd 'sudo rm -rf /tmp/HB_Installation/'
 
 print_status "##### Usermode & Permissions Setup ######\n\n"
 exec_cmd 'sudo useradd --system homebridge'
@@ -103,15 +116,34 @@ exec_cmd 'sudo systemctl enable homebridge'
 
 
 print_status "##### Installing Homebridge Server & Config UI X, GPIO Device Plugins ######\n\n\n"
+while true 
+do
+    read -p "Do yo want to install Tasmota plugin?" answer
+    case $answer in
+        [yY]* )  echo "{green}Installing Tasmota plugin{normal}";
+		exec_cmd 'sudo npm install -g --unsafe-perm homebridge-mqtt-switch-tasmota';
+		echo "Updating Homebridge config.json";
+		exec_cmd 'sudo cp HB_Installation/config_Tasmota.json /var/homebridge/config.json';
+		break;;
+		[nN]* ) echo "{red}Skipping Tasmota installation{normal}";
+		break;;
+         * ) echo "Please write y/n to continue";;
+    esac
+done		
 exec_cmd 'sudo npm install -g --unsafe-perm homebridge'
 print_status "##### Installing Config UI X Plugin ######\n\n\n"
 exec_cmd 'sudo npm install -g --unsafe-perm homebridge-config-ui-x'
 print_status "##### Installing GPIO Device Plugin ######\n\n\n"
 exec_cmd 'sudo npm install -g --unsafe-perm homebridge-gpio-device'
 
-print_bold "Homebridge Installation Finished! Starting Homebridge\n\n 
+cd ~
+sudo rm install_HomebridgeAll.sh
+exec_cmd 'sudo rm -rf /tmp/HB_Installation/'
+
+
+print_bold "Homebridge Installation Finished! Starting Homebridge\n\n
 The system will automatically reboot in 30 seconds to fix needed permisions\n\n
-Pair pair your phone after reboot !!!!"
+Pair your iPhone/iPad after reboot !!!!"
 sleep 5
 print_status "##### Starting Homebridge server ######\n\n"
 exec_cmd 'sudo systemctl start homebridge'
