@@ -24,11 +24,7 @@
     ],
     "accessories": [
         {
-            "accessory": "GPIODevice",
-            "name": "Sofa",
-            "type": "Lightbulb",
-            "inverted": "true",
-            "pin": 5
+        
         }
     ]
 }
