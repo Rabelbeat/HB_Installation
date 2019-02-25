@@ -10,7 +10,7 @@
         {
             "platform": "config",
             "name": "Config",
-            "port": 8080,
+            "port": 8888,
             "auth": "none",
             "theme": "blue",
             "restart": "sudo -n systemctl restart homebridge",
