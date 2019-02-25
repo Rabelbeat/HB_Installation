@@ -2,12 +2,13 @@
     "bridge": {
         "name": "Homebridge",
         "username": "A4:C3:3A:E3:C2:3A",
-        "port": 51826,
+        "port": 51828,
         "pin": "031-45-154"
     },
     "description": "Homebridge",
     "platforms": [
         {
+            "platform": "config",
             "name": "Config",
             "port": 8080,
             "auth": "none",
@@ -18,13 +19,9 @@
             "log": {
                 "method": "systemd",
                 "service": "homebridge"
-            },
-            "platform": "config"
+            }
         }
     ],
     "accessories": [
-        {
-        
-        }
     ]
 }
