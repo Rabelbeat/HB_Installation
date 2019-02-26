@@ -8,6 +8,7 @@
     "description": "Homebridge",
     "platforms": [
         {
+            "platform": "config",
             "name": "Config",
             "port": 8080,
             "auth": "none",
@@ -18,8 +19,7 @@
             "log": {
                 "method": "systemd",
                 "service": "homebridge"
-            },
-            "platform": "config"
+            }
         }
     ],
     "accessories": [
