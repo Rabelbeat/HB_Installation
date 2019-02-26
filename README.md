@@ -2,7 +2,7 @@
 complete installation script with one line of code including Node.js V8.9.4, [Homebridge](https://github.com/nfarina/homebridge), [Config-ui-x Plugin](https://github.com/oznu/homebridge-config-ui-x), [GPIO Device Plugin](https://github.com/oznu/homebridge-config-ui-x)
 and create [systemd service](https://timleland.com/setup-homebridge-to-start-on-bootup) to start Homebridge on boot-up
 ```
-wget https://raw.githubusercontent.com/Rabelbeat/HB_Installation/master/install_HomebridgeAll.sh && sh install.sh
+wget https://raw.githubusercontent.com/Rabelbeat/HB_Installation/master/install.sh && sh install.sh
 ```
 Please follow after instructions
 
@@ -22,7 +22,7 @@ Please follow after instructions
 ולהעתיק לטרמינל את הפקודה הבאה [Putty](https://the.earth.li/~sgtatham/putty/latest/w64/putty-64bit-0.70-installer.msi) להתחלת ההתקנה יש להתחבר לרספברי בעזרת 
 
 ```
-wget https://raw.githubusercontent.com/Rabelbeat/HB_Installation/master/install_HomebridgeAll.sh && sh install.sh
+wget https://raw.githubusercontent.com/Rabelbeat/HB_Installation/master/install.sh && sh install.sh
 ```
 יש לעקוב אחר ההוראות בהליך ההתקנה
 
