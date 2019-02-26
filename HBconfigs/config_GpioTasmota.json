@@ -8,6 +8,7 @@
     "description": "Homebridge",
     "platforms": [
         {
+            "platform": "config",
             "name": "Config",
             "port": 8080,
             "auth": "none",
@@ -18,8 +19,7 @@
             "log": {
                 "method": "systemd",
                 "service": "homebridge"
-            },
-            "platform": "config"
+            }
         }
     ],
     "accessories": [
@@ -34,7 +34,7 @@
             "description": "Tatmota MQTT",
             "accessory": "mqtt-switch-tasmota",
             "switchType": "lightbulb",
-            "name": "SonoffRF",
+            "name": "Sonoff Tasmota",
             "url": "mqtt://127.0.0.1",
             "topics": {
                 "statusGet": "stat/sonoff/POWER",
@@ -43,7 +43,7 @@
             },
             "manufacturer": "RabelBeat",
             "model": "Sonoff Basic",
-            "serialNumberMAC": ""
+            "serialNumberMAC": "Phalcon 9"
         }
     ]
 }
