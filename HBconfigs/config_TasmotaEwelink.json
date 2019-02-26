@@ -1,0 +1,49 @@
+{
+    "bridge": {
+        "name": "Homebridge",
+        "username": "A4:C3:3A:E3:C2:3A",
+        "port": 51826,
+        "pin": "031-45-154"
+    },
+    "description": "Homebridge",
+    "platforms": [
+        {
+            "platform": "config",
+            "name": "Config",
+            "port": 8090,
+            "auth": "none",
+            "theme": "blue",
+            "restart": "sudo -n systemctl restart homebridge",
+            "tempUnits": "c",
+            "sudo": true,
+            "log": {
+                "method": "systemd",
+                "service": "homebridge"
+            }
+        },
+           {
+            "platform": "eWeLink",
+            "name": "eWeLink",
+            "email": "YourEwelink@email.com",
+            "password": "Ewelink_Password",
+            "imei": "DC8F3654-C088-4AF0-839E-2E018FCEE49F"
+        }
+    ],
+    "accessories": [
+        {
+            "description": "Tatmota MQTT",
+            "accessory": "mqtt-switch-tasmota",
+            "switchType": "lightbulb",
+            "name": "Sonoff Tasmota",
+            "url": "mqtt://127.0.0.1",
+            "topics": {
+                "statusGet": "stat/sonoff/POWER",
+                "statusSet": "cmnd/sonoff/power",
+                "stateGet": "tele/sonoff/STATE"
+            },
+            "manufacturer": "RabelBeat",
+            "model": "Sonoff Basic",
+            "serialNumberMAC": "Phalcon 9"
+        }
+    ]
+}
