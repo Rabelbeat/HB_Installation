@@ -1,7 +1,7 @@
 {
     "bridge": {
         "name": "Homebridge",
-        "username": "A4:C3:3A:E3:C2:3A",
+        "username": "A5:C3:3B:E7:A6:3B",
         "port": 51826,
         "pin": "031-45-154"
     },
@@ -21,19 +21,19 @@
                 "service": "homebridge"
             }
         },
-           {
+        {
             "platform": "eWeLink",
             "name": "eWeLink",
             "email": "YourEwelink@email.com",
             "password": "Ewelink_Password",
-            "imei": "DC8F3654-C088-4AF0-839E-2E018FCEE49F"
+            "imei": "DC863681-C258-7AF2-8A9F-2E018FCEE49F"
         }
     ],
     "accessories": [
         {
             "accessory": "GPIODevice",
             "name": "Sofa",
-            "type": "outlet",
+            "type": "Outlet",
             "inverted": "true",
             "pin": 5
         },
