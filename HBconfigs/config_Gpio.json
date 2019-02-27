@@ -1,7 +1,7 @@
 {
     "bridge": {
         "name": "Homebridge",
-        "username": "A4:C3:3A:E3:C2:3A",
+        "username": "A4:C2:3B:F3:C5:3A",
         "port": 51826,
         "pin": "031-45-154"
     },
@@ -26,7 +26,7 @@
         {
             "accessory": "GPIODevice",
             "name": "Sofa",
-            "type": "outlet",
+            "type": "Outlet",
             "inverted": "true",
             "pin": 5
         }
