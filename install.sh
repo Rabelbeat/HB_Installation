@@ -1,7 +1,8 @@
 #!/bin/bash
 
-CPU="`uname -m`"
-IP="`hostname -I`"
+CPU="$(uname -m)"
+IP="$(hostname -I)"
+
 install_mosquitto=0
 install_tasmota=0
 install_ewelink=0
@@ -64,12 +65,21 @@ cmd_run() {
 post_installation(){
 	print_status "##### Starting installation for $CPU hardware ######\n\n";
 	cd ~
+	if [ -z "$(ls -A /var/homebridge)" ]; then
+   	print_status "##### var/homebridge Empty ######\n\n";
+else
+   	print_status "var/homebridge Not Empty,\n 
+	Backing up old config.json to ~ /home/$USER/old_Homebridge";
+	cmd_run 'mkdir ~/old_Homebridge';
+	cmd_run 'sudo cp -r /var/homebridge/ ~/old_Homebridge';
+	cmd_run 'sudo rm -rf /var/homebridge';
+fi
 	sudo systemctl stop homebridge.service
 	cmd_run 'sudo rm -f /etc/systemd/system/homebridge.service';
 	cmd_run 'sudo rm -rf HB_Installation/';
-	cmd_run 'sudo rm -rf /var/homebridge'
+	cmd_run 'sudo rm -rf installHB.*';
 	sudo userdel homebridge
-	cmd_run 'sudo apt-get update';
+	sudo apt-get update
 	cmd_run 'sudo apt-get install -y git make curl libavahi-compat-libdnssd-dev';
 	print_status "##### Downloading Homebridge & Config files ######\n\n";
 	cmd_run 'git clone https://github.com/Rabelbeat/HB_Installation.git';
@@ -81,11 +91,18 @@ armv6_installation(){
 	cmd_run 'wget https://nodejs.org/dist/v8.9.4/node-v8.9.4-linux-armv6l.tar.gz';
 	cmd_run 'tar -xvf node-v8.9.4-linux-armv6l.tar.gz';
 	cmd_run 'sudo cp -r node-v8.9.4-linux-armv6l/* /usr/local/';
-	sudo npm uninstall -g homebridge
+	
+	if [ -z "$(ls -A /usr/lib/node_modules/homebridge-*)" ]; then
+   	print_status "##### /usr/lib/node_modules Empty ######\n\n";
+else
+   	print_status "/usr/lib/node_modules NOT Empty - Cleaning homebridge server & all plugins\n";
+   	sudo npm uninstall -g homebridge
 	sudo npm uninstall -g homebridge-homebridge-ewelink-max
 	sudo npm uninstall -g homebridge-config-ui-x
 	sudo npm uninstall -g homebridge--gpio-device
 	sudo npm uninstall -g homebridge-mqtt-switch-tasmota
+   
+fi
 	cmd_run 'sudo cp HB_Installation/HBservices/service_environment /etc/default/homebridge';
 	cmd_run 'sudo cp HB_Installation/HBservices/rpi_abz_Service /etc/systemd/system/homebridge.service';
 }
@@ -95,11 +112,17 @@ armv7_installation(){
 	print_status "##### Installing Node.Js  For $CPU ######\n\n";
 	cmd_run 'curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash -';
 	cmd_run 'sudo apt-get install -y nodejs'
-	sudo npm uninstall -g homebridge
+	if [ -z "$(ls -A /usr/lib/node_modules/homebridge-*)" ]; then
+   	print_status "##### /usr/lib/node_modules Empty ######\n\n";
+else
+   	print_status "/usr/lib/node_modules NOT Empty - Cleaning homebridge server & all plugins\n";
+   	sudo npm uninstall -g homebridge
 	sudo npm uninstall -g homebridge-homebridge-ewelink-max
 	sudo npm uninstall -g homebridge-config-ui-x
 	sudo npm uninstall -g homebridge--gpio-device
 	sudo npm uninstall -g homebridge-mqtt-switch-tasmota
+   
+fi
 	cmd_run 'sudo cp HB_Installation/HBservices/service_environment /etc/default/homebridge';
 	cmd_run 'sudo cp HB_Installation/HBservices/rpi_2-3_Service /etc/systemd/system/homebridge.service';
 }
@@ -107,12 +130,18 @@ armv7_installation(){
 X86_64_installation(){
 	print_status "##### Installing Node.Js  Ver 10.x ######\n\n";
 	cmd_run 'sudo apt-get install -y g++ net-tools'
-	cmd_run 'curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -'
+	curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 	cmd_run 'sudo apt-get install -y nodejs'
-	sudo npm uninstall -g homebridge
-	sudo npm uninstall -g homebridge-config-ui-x
+	if [ -z "$(ls -A /usr/lib/node_modules/homebridge-*)" ]; then
+   	print_status "##### /usr/lib/node_modules Empty ######\n";
+else
+   	print_status "/usr/lib/node_modules NOT Empty - Cleaning homebridge server & default plugins\n";
+   	sudo npm uninstall -g homebridge
 	sudo npm uninstall -g homebridge-homebridge-ewelink-max
+	sudo npm uninstall -g homebridge-config-ui-x
 	sudo npm uninstall -g homebridge-mqtt-switch-tasmota
+   
+fi
 	cmd_run 'sudo cp HB_Installation/HBservices/service_environment /etc/default/homebridge'
 	cmd_run 'sudo cp HB_Installation/HBservices/X86_64_Service /etc/systemd/system/homebridge.service'
 }
@@ -121,18 +150,18 @@ armv67_HBconfigs(){
 if [ $install_tasmota -eq 1 ] && [ $install_ewelink -eq 1 ]
 then
 echo "Updating Homebridge config.json for Tasmota & Ewelink";
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_GpioTasmotaEwelink.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_GpioTasmotaEwelink.json /var/homebridge/config.json';
 elif [ $install_tasmota -eq 1 ]
 then
 echo "Updating Homebridge config.json for Tasmota";
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_GpioTasmota.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_GpioTasmota.json /var/homebridge/config.json';
 elif [ $install_ewelink -eq 1 ]
 then
 echo "Updating Homebridge config.json for Ewelink";
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_GpioEwelink.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_GpioEwelink.json /var/homebridge/config.json';
 else
 echo "Skipping Tasmota & Ewelink  installation"
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_Gpio.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_Gpio.json /var/homebridge/config.json';
 fi
 }
 
@@ -140,23 +169,23 @@ X86_64_HBconfigs(){
 if [ $install_tasmota -eq 1 ] && [ $install_ewelink -eq 1 ]
 then
 echo "Updating Homebridge config.json for Tasmota & Ewelink";
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_TasmotaEwelink.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_TasmotaEwelink.json /var/homebridge/config.json';
 elif [ $install_tasmota -eq 1 ]
 then
 echo "Updating Homebridge config.json for Tasmota";
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_Tasmota.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_Tasmota.json /var/homebridge/config.json';
 elif [ $install_ewelink -eq 1 ]
 then
 echo "Updating Homebridge config.json for Ewelink";
-cmd_run 'sudo cp HB_Installation/HBConfigs/config_Ewelink.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config_Ewelink.json /var/homebridge/config.json';
 else
 echo "Skipping Tasmota & Ewelink  installation"
-cmd_run 'sudo cp HB_Installation/HBConfigs/config.json /var/homebridge/config.json';
+cmd_run 'sudo cp HB_Installation/HBconfigs/config.json /var/homebridge/config.json';
 fi
 }
 mosquitto_installation(){
 echo "{green}Installing mosquitto & mosquitto-clients{normal}";
-cmd_run 'sudo apt-install -y mosquitto mosquitto-clients';
+cmd_run 'sudo apt-get install -y mosquitto mosquitto-clients';
 
 }
 
@@ -164,14 +193,15 @@ shairport_installation(){
 echo "{green}Installing Shairport-Sync AirPlay server{normal}";
   cmd_run 'sudo apt-get install -y build-essential git xmltoman autoconf automake libtool libdaemon-dev libpopt-dev libconfig-dev libasound2-dev avahi-daemon libavahi-client-dev libssl-dev libpulse-dev libsoxr-dev libmbedtls-dev';
   cmd_run 'cd ~'
+  cmd_run 'sudo rm -rf shairport-sync';
   cmd_run 'git clone https://github.com/mikebrady/shairport-sync.git'
-  cmd_run 'cd ~/shairport-sync'
+cd shairport-sync
   cmd_run 'autoreconf -fi'
   cmd_run './configure --sysconfdir=/etc --with-alsa --with-avahi --with-ssl=openssl --with-systemd --with-metadata --with-soxr'
-  cmd_run 'sudo make'
+  cmd_run 'make'
   cmd_run 'sudo make install'
-  cmd_run 'systemctl enable shairport-sync'
-  cmd_run 'systemctl start shairport-sync'
+  cmd_run 'sudo systemctl enable shairport-sync'
+  cmd_run 'sudo systemctl start shairport-sync'
 }
 print_bold "
 			שלום, הסקריפט הבא יתיקן באופן אוטומטי את כל מה שנחוץ להתקנת הומברידג
@@ -184,30 +214,16 @@ print_bold "
 #fi
 
 
-echo $CPU
-
-while true
-do
-    read -p "${bold}$Do yo want to install mosquitto MQTT broker? y/n: ${normal}" answer
-    case $answer in
-        [yY]* )echo "${green}Cool, Mosquitto will be install${normal}";  
-		install_mosquitto=1;
-		break;;
-		[nN]* ) echo "${red}OK, disable Mosquitto installation${normal}";
-		install_mosquitto=0;
-		break;;
-         * ) echo "Please type y/n to continue!";;
-    esac
-done
+echo "$CPU"
 
 while true 
 do
     read -p "${bold}Do yo want to install Tasmota plugin? y/n: ${normal}" answer
     case $answer in
-        [yY]* )  echo "${green}Cool, Tasmota will be install${normal}";
+        [yY]* )  echo "${green}Cool, Tasmota will be install${normal}\n\n";
 		install_tasmota=1
 		break;;
-		[nN]* ) echo "${red}OK, disable Tasmota installation${normal}";
+		[nN]* ) echo "${red}OK, disable Tasmota installation${normal}\n\n";
 		install_tasmota=0;
 		break;;
          * ) echo "Please type y/n to continue!";;
@@ -218,11 +234,25 @@ while true
 do
     read -p "${bold}Do yo want to install Ewelink Plugin? y/n: ${normal}" answer
     case $answer in
-        [yY]* )  echo "${green}Cool, Ewelink will be install${normal}";
+        [yY]* )  echo "${green}Cool, Ewelink will be install${normal}\n\n";
 		install_ewelink=1
 		break;;
-		[nN]* ) echo "${red}OK, disable Ewelink installation${normal}";
+		[nN]* ) echo "${red}OK, disable Ewelink installation${normal}\n\n";
 		install_ewelink=0;
+		break;;
+         * ) echo "Please type y/n to continue!";;
+    esac
+done
+
+while true
+do
+    read -p "${bold}$Do yo want to install mosquitto MQTT broker? y/n: ${normal}" answer
+    case $answer in
+        [yY]* )echo "${green}Cool, Mosquitto will be install${normal}\n\n";  
+		install_mosquitto=1;
+		break;;
+		[nN]* ) echo "${red}OK, disable Mosquitto installation${normal}\n\n";
+		install_mosquitto=0;
 		break;;
          * ) echo "Please type y/n to continue!";;
     esac
@@ -232,10 +262,10 @@ while true
 do
     read -p "${bold}Do yo want to install Shairport-Sync AirPlay? y/n: ${normal}" answer
     case $answer in
-        [yY]* )  echo "${green}Cool, Shairport-Sync will be install${normal}";
+        [yY]* )  echo "${green}Cool, Shairport-Sync will be install${normal}\n\n";
 		install_shairport=1
 		break;;
-		[nN]* ) echo "${red}OK, disable Shairport-Sync installation${normal}";
+		[nN]* ) echo "${red}OK, disable Shairport-Sync installation${normal}\n\n";
 		install_shairport=0;
 		break;;
          * ) echo "Please type y/n to continue!";;
@@ -285,8 +315,6 @@ echo "Skipping Shairport-Sync installation"
 fi
 
 print_status "##### Usermode & Permissions Setup ######\n\n"
-#cmd_run 'sudo userdel homebridge'
-#cmd_run 'sudo rm -rf /var/homebridge'
 cmd_run 'sudo useradd --system homebridge'
 cmd_run 'sudo mkdir /var/homebridge'
 cmd_run 'sudo chmod -R 0777 /var/homebridge'
