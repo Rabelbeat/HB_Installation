@@ -128,7 +128,7 @@ fi
 }
 
 X86_64_installation(){
-	print_status "##### Installing Node.Js  Ver 10.x ######\n\n";
+	print_status "##### Installing Node.Js  Ver 8.x ######\n\n";
 	cmd_run 'sudo apt-get install -y g++ net-tools'
 	curl -sL https://deb.nodesource.com/setup_10.x | sudo -E bash -
 	cmd_run 'sudo apt-get install -y nodejs'
